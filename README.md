@@ -10,6 +10,8 @@
 
 PolyAgent is an agent platform developed across the [Duke-ECE](https://github.com/Duke-ECE) repositories. Users configure reusable agents, start conversations, stream replies, and return to saved sessions. Applications can call hosted agents through an HTTP API or TypeScript SDK. Agent tools run in isolated sandboxes when the sandbox integration is enabled.
 
+[![PolyAgent product homepage showing hosted agents and the server-side API](assets/polyagent-home.png)](https://managed-agents.colab.duke.edu/)
+
 ## Explore PolyAgent
 
 | Start here | What you can do |
@@ -22,6 +24,12 @@ PolyAgent is an agent platform developed across the [Duke-ECE](https://github.co
 | [TypeScript SDK](https://github.com/Duke-ECE/managed-agents-sdk) | Call the chat API from a Node.js server. |
 
 The platform currently runs as a project deployment. Access to the platform-provided LLM is limited to approved accounts; you can configure an agent with your own compatible LLM provider.
+
+## Quick start
+
+1. [Sign in to the console](https://managed-agents.colab.duke.edu/console) and create or clone an agent. Set its instructions, model, and allowed tools. The built-in assistant requires platform LLM access; otherwise configure an agent with your own provider key.
+2. Open [Chat](https://managed-agents.colab.duke.edu/chat), select your agent, and send a message. PolyAgent saves the session so you can continue it later.
+3. To use the agent from an application, create an [API key](https://managed-agents.colab.duke.edu/keys), keep it on your server, and follow the [developer guide](https://duke-ece.github.io/managed-agents-docs/developers/) to start a session and stream replies.
 
 ## Architecture
 
