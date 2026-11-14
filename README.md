@@ -18,25 +18,9 @@ The platform currently runs as a project deployment. Access to the platform-prov
 
 ## Architecture
 
-```mermaid
-flowchart LR
-    U[Browser console] -->|HTTPS + SSE| API[Go API gateway]
-    CLI[PolyAgent CLI] -->|HTTPS + SSE| API
-    APP[Your app + TypeScript SDK] -->|HTTPS + SSE| API
-    U -->|Sign in| AUTH[Supabase Auth]
-    API -->|Verify login JWT| AUTH
-    API -->|Agent and API key data| DB
-    API -->|gRPC: session lifecycle| SESS[Session manager]
-    API -->|gRPC: live chat| RUNTIME[Agent runtime]
-    RUNTIME -->|Stream completions| LLM[OpenAI-compatible LLM]
-    RUNTIME -->|Persist completed turns| SESS
-    SESS -->|PostgREST| DB[(Supabase Postgres)]
-    RUNTIME -.->|Tool execution when enabled| SANDBOX[Sandbox manager]
-    SANDBOX -.->|Isolated workspace| CUBE[CubeSandbox pilot]
-    SANDBOX -.->|Single-use pods| K8S[Kubernetes]
-```
+![Conceptual architecture showing the agent runtime, session service, and isolated sandbox](https://duke-ece.github.io/managed-agents-docs/diagrams/agent-runtime-concept.png?v=2bc359e9)
 
-Active agent sessions live in the runtime. Session records and transcripts are stored through the session manager, allowing the runtime to hydrate a session after a restart or idle eviction. The sandbox manager supports a bounded CubeSandbox development pilot; isolated execution is not enabled for every deployment. See the [architecture guide](https://duke-ece.github.io/managed-agents-docs/architecture) for the current request flow and its limits.
+This [design sketch from the documentation](https://duke-ece.github.io/managed-agents-docs/architecture) shows the planned separation of agent execution, durable session state, and isolated tool execution. It uses the project's earlier “Managed Agents” name and is **not a diagram of the current deployment**. Today the Go API gateway calls the agent runtime and session manager over gRPC; the runtime keeps active agents in memory and hydrates them from transcripts stored in Supabase Postgres. The sandbox manager supports a bounded CubeSandbox development pilot. See the [architecture guide](https://duke-ece.github.io/managed-agents-docs/architecture) for the current request flow and rollout limits.
 
 ## Main repositories
 
