@@ -18,9 +18,9 @@ The platform currently runs as a project deployment. Access to the platform-prov
 
 ## Architecture
 
-![Conceptual architecture showing the agent runtime, session service, and isolated sandbox](https://duke-ece.github.io/managed-agents-docs/diagrams/agent-runtime-concept.png?v=2bc359e9)
+![PolyAgent target architecture with a platform cluster and a dedicated CubeSandbox cluster](https://raw.githubusercontent.com/Duke-ECE/managed-agents-design/main/requirements/0005-cubesandbox-integration/two-clusters.png)
 
-This [design sketch from the documentation](https://duke-ece.github.io/managed-agents-docs/architecture) shows the planned separation of agent execution, durable session state, and isolated tool execution. It uses the project's earlier “Managed Agents” name and is **not a diagram of the current deployment**. Today the Go API gateway calls the agent runtime and session manager over gRPC; the runtime keeps active agents in memory and hydrates them from transcripts stored in Supabase Postgres. The sandbox manager supports a bounded CubeSandbox development pilot. See the [architecture guide](https://duke-ece.github.io/managed-agents-docs/architecture) for the current request flow and rollout limits.
+This [two-cluster architecture diagram](https://github.com/Duke-ECE/managed-agents-design/blob/main/requirements/0005-cubesandbox-integration/two-clusters.png) shows the target separation between the platform services and CubeSandbox session MicroVMs. It uses the project's earlier “Managed Agents” name. The current CubeSandbox integration is a bounded development pilot; the dedicated multi-node Cube cluster and durable sandbox lifecycle shown here are **not yet generally available**. See the [architecture guide](https://duke-ece.github.io/managed-agents-docs/architecture) for the implemented request flow and the [CubeSandbox design](https://github.com/Duke-ECE/managed-agents-design/tree/main/requirements/0005-cubesandbox-integration) for rollout status.
 
 ## Main repositories
 
