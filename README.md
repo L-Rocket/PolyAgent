@@ -1,3 +1,5 @@
+<img src="https://managed-agents.colab.duke.edu/favicon.svg" alt="PolyAgent icon" width="72" height="72" />
+
 # PolyAgent
 
 ## 🚀 [Open PolyAgent →](https://managed-agents.colab.duke.edu/)
