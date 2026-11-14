@@ -2,6 +2,8 @@
 
 ## 🚀 [Open PolyAgent →](https://managed-agents.colab.duke.edu/)
 
+**📖 [Read the documentation →](https://duke-ece.github.io/managed-agents-docs/)**
+
 **Build an agent once. Use it from the console, CLI, or your application.**
 
 PolyAgent is an agent platform developed across the [Duke-ECE](https://github.com/Duke-ECE) repositories. Users configure reusable agents, start conversations, stream replies, and return to saved sessions. Applications can call hosted agents through an HTTP API or TypeScript SDK. Agent tools run in isolated sandboxes when the sandbox integration is enabled.
@@ -11,6 +13,7 @@ PolyAgent is an agent platform developed across the [Duke-ECE](https://github.co
 | Start here | What you can do |
 | --- | --- |
 | [Web console](https://managed-agents.colab.duke.edu/) | Sign in, configure agents, chat, and create API keys. |
+| [Documentation](https://duke-ece.github.io/managed-agents-docs/) | Find setup guides, API examples, and architecture references. |
 | [Developer guide](https://duke-ece.github.io/managed-agents-docs/developers/) | Connect an application to a hosted agent. |
 | [API guide](https://duke-ece.github.io/managed-agents-docs/developers/api-guide) | Create sessions and consume streamed responses. |
 | [CLI](https://github.com/Duke-ECE/managed-agents-cli) | Manage agents and conversations from a terminal. |
