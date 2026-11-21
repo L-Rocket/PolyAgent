@@ -10,9 +10,9 @@ Work inside **one repository at a time**. There is no workspace-wide build, root
 
 ## Initialize and inspect
 
-The bootstrap instructions are in `.bootstrap/polyagent/workspace/README.md`. Run `.bootstrap/polyagent/scripts/init-workspace.sh` from this root to install missing workspace files, clone the public manifest, verify remotes and branches, and create local `.agents/skills/` links. The script does not pull or alter existing child checkouts.
+The bootstrap instructions are in `.bootstrap/polyagent/workspace/README.md`. Run `.bootstrap/polyagent/scripts/init-workspace.sh` from this root to install missing workspace files, attempt every known checkout, verify remotes and branches, and create local `.agents/skills/` links. The script does not pull or alter existing child checkouts.
 
-The public manifest is `.bootstrap/polyagent/workspace/repos.tsv`. Repositories that require separate authorization go in the ignored `.bootstrap/polyagent/workspace/repos.local.tsv`. If access is missing, report it; do not substitute a different repository or claim a complete checkout. The bootstrap repository, child repositories, and `.agents/skills/` are separate from this unversioned root.
+The complete known-repository manifest is `.bootstrap/polyagent/workspace/repos.tsv`. It includes public upstream references and access-controlled project repositories. Additional personal checkouts can go in the ignored `.bootstrap/polyagent/workspace/repos.local.tsv`. If access is missing, report it; do not substitute a different repository or claim a complete checkout. Use the manifest's default branches for a new workspace, not feature branches or temporary worktrees from another machine. The bootstrap repository, child repositories, and `.agents/skills/` are separate from this unversioned root.
 
 ## Platform request flow
 
@@ -35,21 +35,25 @@ The [public architecture guide](https://duke-ece.github.io/managed-agents-docs/a
 | Directory or component | Role | First checks |
 | --- | --- | --- |
 | `managed-agents-frontend/` | React web console for login, agent configuration, chat, sessions, and access controls. | Its `AGENTS.md`/README; `npm ci`, `npm run build`. |
-| API gateway (access-controlled checkout) | Authenticated HTTP and SSE facade; resolves agent templates and calls session/runtime services. | Its own `AGENTS.md`; Go build, vet, test. |
+| `managed-agents-backend/` (access-controlled) | Authenticated HTTP and SSE gateway; resolves agent templates and calls session/runtime services. | Its own `AGENTS.md`; Go build, vet, test. |
 | `session-manager/` | Go gRPC service for durable session records and transcripts, including user ownership. | README; `go build ./...`, `go vet ./...`, `go test ./...`. |
 | `agent-runtime/` | TypeScript gRPC service hosting pi agents and streaming chat; persists completed turns. | README; `npm ci`, `npm run build`, `npm test`. |
 | `sandbox-manager/` | Go service for isolated tool execution and sandbox lifecycle. | README; Go build, vet, test. |
 | `protos/` | Shared gRPC contracts and committed generated Go code. | `buf lint`, `buf generate`; inspect consumer pins. |
 | `managed-agents-cli/` | Standalone Go client for user-scoped operations. | Its `AGENTS.md`; Go build, vet, test. |
+| `managed-agents-mobile/` (access-controlled) | Mobile client. | Its own `AGENTS.md` and README. |
 | `managed-agents-sdk/` | TypeScript application SDK. | Its README and package scripts. |
 | `managed-agents-sdk-example/` | Example application using the SDK. | Its README and package scripts. |
 | `managed-agents-docs/` | VitePress developer, architecture, service, and operations guides. | `npm ci`, `npm run docs:build`. |
 | `managed-agents-design/` | Cross-repository requirements, decisions, and delivery records. | Relevant `requirements/<id>/` directory. |
 | `standards/` | Shared engineering conventions and service templates. | Read before changing a service's structure. |
 | `pi/` | Upstream agent-harness reference checkout; platform builds consume published packages pinned in `agent-runtime`. | Read `pi/AGENTS.md`; do not run its full build or test outside its documented workflow. |
-| `teamSkills/` (authorized checkout) | Team operations and onboarding skills. | Link matching skill directories into `.agents/skills/`. |
+| `CubeSandbox/` | Upstream reference source for the CubeSandbox integration; independent of PolyAgent releases. | Read its `AGENTS.md` before changing or building it. |
+| `my-go-layout/` (access-controlled) | Personal Go layout reference, independent of the platform. | Read its own README; do not treat it as a deployment unit. |
+| `ssh-key-uploader/` (access-controlled) | Standalone team operations utility. | Read its own README; handle local configuration privately. |
+| `teamSkills/` (access-controlled) | Team operations and onboarding skills. | The bootstrap script links matching skill directories into `.agents/skills/`. |
 
-Mobile, operations, and personal checkouts may also exist for authorized team members. They are not required for the public bootstrap. Read their own guides when present; do not infer their release or security boundaries from this table.
+The 18 entries in the manifest are repositories, not one composite source tree. The bootstrap checkout is a nineteenth, separate repository. Temporary preview and release worktrees are extra checkouts of existing repositories and are intentionally not in the manifest. Read the owning repository's guide before creating one.
 
 ## Service boundaries worth preserving
 
@@ -67,7 +71,7 @@ The runtime owns the live agent loop and streaming model events, not long-term s
 
 ### Sandbox execution
 
-`sandbox-manager` owns sandbox resources and execution boundaries. Older protocol packages cover single-use Kubernetes sandboxes; the newer CubeSandbox session-workspace path is a development pilot. Keep these modes distinct in code and documentation. A tool call's execution and cleanup rules belong to the sandbox service, while the runtime only calls the relevant contract. Consult the current requirement and service guide for deployment status before changing rollout assumptions.
+`sandbox-manager` owns sandbox resources and execution boundaries. Older protocol packages cover single-use Kubernetes sandboxes; the newer CubeSandbox session-workspace path is a development pilot. The `CubeSandbox/` checkout is upstream reference source, not a PolyAgent service release. Keep these modes distinct in code and documentation. A tool call's execution and cleanup rules belong to the sandbox service, while the runtime only calls the relevant contract. Consult the current requirement and service guide for deployment status before changing rollout assumptions.
 
 ## Contracts and state
 
@@ -96,7 +100,7 @@ The frontend preview port can be set with `FRONTEND_PORT` and the docs port with
 
 ## Change and documentation workflow
 
-1. Read the target repository's `AGENTS.md`, README, and relevant code. Use its own build and test commands. The public map above is an orientation, not a replacement for current repository instructions.
+1. Read the target repository's `AGENTS.md`, README, and relevant code. Use its own build and test commands. This workspace map is an orientation, not a replacement for current repository instructions.
 2. For work spanning repositories, find or create one requirement in `managed-agents-design/requirements/`. Keep its design, decision log, and delivery record together. Implement and verify each repository independently.
 3. For interface changes, update `protos/` first, release the contract, then bump each consumer. Record the version and verification in the requirement's delivery record.
 4. Review `managed-agents-docs/` whenever user workflows, API contracts, setup, operations, or rollout status changes. Build the docs site after editing it. Distinguish an implemented feature from a pilot or proposed design.

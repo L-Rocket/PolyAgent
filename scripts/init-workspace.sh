@@ -49,7 +49,7 @@ process_manifest() {
     path="$workspace_root/$directory"
     if [ ! -e "$path" ]; then
       echo "Cloning $directory"
-      if ! git clone --branch "$branch" -- "$url" "$path"; then
+      if ! GIT_TERMINAL_PROMPT=0 GCM_INTERACTIVE=never git clone --branch "$branch" -- "$url" "$path"; then
         echo "FAILED: $directory could not be cloned (check URL and access)" >&2
         failed=1
         continue
