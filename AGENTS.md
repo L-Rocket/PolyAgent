@@ -1,14 +1,14 @@
 # AGENTS.md — PolyAgent workspace
 
-This repository is the public entry point for **PolyAgent**, a platform for configuring agents, chatting with them, and using them through a web console, CLI, or API/SDK. It is also the root of a development workspace. Each child directory created by `scripts/init-workspace.sh` is an **independent Git repository** with its own history, dependencies, CI, and releases. There is no root-level build or shared lockfile.
+This file is the public workspace guide for **PolyAgent**, a platform for configuring agents, chatting with them, and using them through a web console, CLI, or API/SDK. The bootstrap repository lives at `.bootstrap/polyagent/`; its initialization script copies this guide to the workspace root. The workspace root itself is **not a Git repository**. Each child project is an independent Git repository with its own history, dependencies, CI, and releases. There is no root-level build or shared lockfile.
 
 This guide describes the relationships between repositories. Read a child repository's own `AGENTS.md` and README before changing its code. The [architecture documentation](https://duke-ece.github.io/managed-agents-docs/architecture) has more detail about the implemented system.
 
 ## Initialize the workspace
 
-1. Read [workspace/README.md](workspace/README.md), then run `scripts/init-workspace.sh` from this repository's root.
-2. The script clones public repositories from `workspace/repos.tsv`, checks existing origins and branches, and creates local `.agents/skills/` symlinks. It does not pull or modify existing child checkouts.
-3. To reproduce a team member's complete workspace, add repositories you are authorized to access to the ignored `workspace/repos.local.tsv` and rerun the script. The public list alone cannot clone private or personal repositories. Report missing access rather than substituting a different repository.
+1. Read `.bootstrap/polyagent/workspace/README.md`, then run `.bootstrap/polyagent/scripts/init-workspace.sh` from the workspace root.
+2. The script copies this guide to the workspace root, clones public repositories from `.bootstrap/polyagent/workspace/repos.tsv`, checks existing origins and branches, and creates local `.agents/skills/` symlinks. It does not pull or modify existing child checkouts.
+3. To reproduce a team member's complete workspace, add repositories you are authorized to access to the ignored `.bootstrap/polyagent/workspace/repos.local.tsv` and rerun the script. The public list alone cannot clone private or personal repositories. Report missing access rather than substituting a different repository.
 4. Review the script's results. Work in one child repository at a time; for a cross-repository change, read the relevant requirement in `managed-agents-design/` first.
 
 ## How the platform fits together
@@ -42,7 +42,7 @@ The web console authenticates users, sends chat requests, and receives streamed 
 | `standards/` | Engineering conventions and service templates. |
 | `pi/` | Upstream agent-harness checkout for reference; platform builds use published packages pinned by `agent-runtime`. |
 
-Some gateway, mobile, team operations, and personal repositories are outside the public manifest. Their owners control access. If they are added through `workspace/repos.local.tsv`, follow each repository's own guide; do not infer its internal behavior from this public overview.
+Some gateway, mobile, team operations, and personal repositories are outside the public manifest. Their owners control access. If they are added through `.bootstrap/polyagent/workspace/repos.local.tsv`, follow each repository's own guide; do not infer its internal behavior from this public overview.
 
 ## Cross-repository rules
 
@@ -51,4 +51,4 @@ Some gateway, mobile, team operations, and personal repositories are outside the
 - **Requirements:** A feature spanning repositories belongs in a requirement directory in `managed-agents-design/`. Record decisions and delivery evidence there. Code, migrations, and tests stay in their owning repositories.
 - **Changes and checks:** Use the build and test commands documented by each child repository. Do not run one workspace-wide build or commit multiple repositories as if they were one project.
 - **Product name:** Use **PolyAgent** in user-facing copy. Established technical identifiers such as repository names, package paths, API routes, and configuration keys stay unchanged unless a separate migration is planned.
-- **Local files:** `.agents/skills/` holds generated symlinks. Child repositories and `workspace/repos.local.tsv` are local checkout state. Do not commit them, credentials, private keys, `.env` files, or machine-specific configuration to this repository.
+- **Local files:** `.agents/skills/` holds generated symlinks. Child repositories and `.bootstrap/polyagent/workspace/repos.local.tsv` are local checkout state. Do not commit credentials, private keys, `.env` files, or machine-specific configuration.

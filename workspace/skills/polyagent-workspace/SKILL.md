@@ -5,4 +5,4 @@ description: Initialize and inspect the PolyAgent multi-repository workspace, in
 
 # PolyAgent workspace
 
-Read the workspace root `AGENTS.md` and `workspace/README.md`, then run `scripts/init-workspace.sh` from the root. Report each failed or inaccessible repository. Before working in a child repository, read its own `AGENTS.md` and README. Never commit child repositories, local skill links, or credentials to the PolyAgent entry-point repository.
+Read the workspace root `AGENTS.md` and `.bootstrap/polyagent/workspace/README.md`, then run `.bootstrap/polyagent/scripts/init-workspace.sh` from the root. Report each failed or inaccessible repository. Before working in a child repository, read its own `AGENTS.md` and README. Keep the workspace root outside Git; never commit credentials or local configuration to the bootstrap repository.

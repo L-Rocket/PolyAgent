@@ -1,28 +1,39 @@
 #!/usr/bin/env bash
 set -uo pipefail
 
-root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-cd "$root" || exit 1
+bootstrap_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+if [ "$(basename "$(dirname "$bootstrap_root")")" != .bootstrap ]; then
+  echo "Clone this repository into <workspace>/.bootstrap/polyagent before running the script." >&2
+  exit 1
+fi
+workspace_root="$(cd "$bootstrap_root/../.." && pwd)"
+if [ -e "$workspace_root/.git" ]; then
+  echo "The workspace root must not be a Git repository: $workspace_root" >&2
+  exit 1
+fi
+cd "$workspace_root" || exit 1
 failed=0
 
-exclude_child() {
-  local directory="$1" exclude="$root/.git/info/exclude"
-  if [ -f "$exclude" ] && ! grep -Fxq "/$directory/" "$exclude"; then
-    printf '/%s/\n' "$directory" >> "$exclude"
-  fi
-}
+if [ -L "$workspace_root/AGENTS.md" ]; then
+  echo "The workspace AGENTS.md must be a regular file, not a symlink." >&2
+  exit 1
+elif [ ! -e "$workspace_root/AGENTS.md" ]; then
+  cp "$bootstrap_root/AGENTS.md" "$workspace_root/AGENTS.md"
+  echo "Installed workspace AGENTS.md"
+elif ! cmp -s "$bootstrap_root/AGENTS.md" "$workspace_root/AGENTS.md"; then
+  echo "CHECK AGENTS.md: local copy differs from the bootstrap source; review and merge updates" >&2
+fi
 
 process_manifest() {
   local manifest="$1" directory url branch path actual_remote actual_branch
   while IFS=$'\t' read -r directory url branch || [ -n "$directory" ]; do
     [[ -z "$directory" || "$directory" == \#* ]] && continue
-    if [[ ! "$directory" =~ ^[A-Za-z0-9._-]+$ || "$directory" == . || "$directory" == .. || "$directory" == assets || "$directory" == scripts || "$directory" == workspace || "$directory" == .agents || -z "$url" || -z "$branch" ]]; then
+    if [[ ! "$directory" =~ ^[A-Za-z0-9._-]+$ || "$directory" == . || "$directory" == .. || "$directory" == .bootstrap || "$directory" == .agents || -z "$url" || -z "$branch" ]]; then
       echo "Invalid entry in $manifest: $directory" >&2
       failed=1
       continue
     fi
-    path="$root/$directory"
-    exclude_child "$directory"
+    path="$workspace_root/$directory"
     if [ ! -e "$path" ]; then
       echo "Cloning $directory"
       if ! git clone --branch "$branch" -- "$url" "$path"; then
@@ -46,18 +57,18 @@ process_manifest() {
   done < "$manifest"
 }
 
-process_manifest "$root/workspace/repos.tsv"
-if [ -f "$root/workspace/repos.local.tsv" ]; then
-  process_manifest "$root/workspace/repos.local.tsv"
+process_manifest "$bootstrap_root/workspace/repos.tsv"
+if [ -f "$bootstrap_root/workspace/repos.local.tsv" ]; then
+  process_manifest "$bootstrap_root/workspace/repos.local.tsv"
 fi
 
-mkdir -p "$root/.agents/skills"
+mkdir -p "$workspace_root/.agents/skills"
 link_skills() {
   local source="$1" prefix="$2" skill name link target
   for skill in "$source"/*/; do
     [ -f "$skill/SKILL.md" ] || continue
     name="$(basename "$skill")"
-    link="$root/.agents/skills/$name"
+    link="$workspace_root/.agents/skills/$name"
     target="../../$prefix/$name"
     if [ -e "$link" ] && [ ! -L "$link" ]; then
       echo "CHECK skill $name: path exists and is not a symlink" >&2
@@ -73,10 +84,16 @@ link_skills() {
     fi
   done
 }
-link_skills "$root/workspace/skills" "workspace/skills"
-if [ -d "$root/teamSkills" ]; then
-  link_skills "$root/teamSkills" "teamSkills"
+link_skills "$bootstrap_root/workspace/skills" ".bootstrap/$(basename "$bootstrap_root")/workspace/skills"
+if [ -d "$workspace_root/teamSkills" ]; then
+  link_skills "$workspace_root/teamSkills" "teamSkills"
 fi
+for link in "$workspace_root/.agents/skills"/*; do
+  if [ -L "$link" ] && [ ! -e "$link" ]; then
+    rm "$link"
+    echo "Removed stale skill link: $(basename "$link")"
+  fi
+done
 
 if [ "$failed" -eq 0 ]; then
   echo "PolyAgent workspace initialized."
