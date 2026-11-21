@@ -31,7 +31,7 @@ The platform currently runs as a project deployment. Access to the platform-prov
 
 ## Set up a development workspace
 
-This repository also provides an entry point for coding agents working across the PolyAgent repositories. See [workspace initialization](workspace/README.md) for the public repository list, optional private checkouts, and verification steps.
+This repository also provides an entry point for coding agents working across the PolyAgent repositories. Start with the [workspace overview for agents](AGENTS.md) to understand how the services and repositories fit together, then use [workspace initialization](workspace/README.md) for the public repository list, optional private checkouts, and verification steps.
 
 Give your coding agent this prompt:
 

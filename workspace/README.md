@@ -13,6 +13,6 @@ my-private-repo<TAB>git@github.com:my-org/my-private-repo.git<TAB>main
 
 Replace the literal `<TAB>` markers in that example with tab characters. Keep private repository names and URLs out of this public repository unless their owners have approved publishing them.
 
-The script links the bundled `polyagent-workspace` skill. If a `teamSkills/` checkout is present (for example, through your local manifest), it links each of its skill directories too. It records cloned child-directory names in this checkout's `.git/info/exclude` so they do not appear as untracked files in the PolyAgent repository. That exclude file is local to each clone.
+The script links the bundled `polyagent-workspace` skill. If an authorized `teamSkills/` checkout is present (for example, through your local manifest), it links each of its skill directories too. Team members can use that repository's workspace inventory to identify additional private checkouts, add their URLs to `repos.local.tsv`, and rerun this script. It records cloned child-directory names in this checkout's `.git/info/exclude` so they do not appear as untracked files in the PolyAgent repository. That exclude file is local to each clone.
 
 After initialization, read the root `AGENTS.md` and the `AGENTS.md` of the child repository you will work in. Each child repository has its own build, tests, and Git workflow.
