@@ -31,12 +31,12 @@ The platform currently runs as a project deployment. Access to the platform-prov
 
 ## Set up a development workspace
 
-This repository also provides an entry point for coding agents working across the PolyAgent repositories. The [workspace overview for agents](AGENTS.md) explains how the services and repositories fit together; [workspace initialization](workspace/README.md) explains how to install it in a workspace whose root is not a Git repository.
+This repository also provides an entry point for coding agents working across the PolyAgent repositories. The [workspace AGENTS.md template](workspace/root/AGENTS.md) explains how the services and repositories fit together; [workspace initialization](workspace/README.md) explains how to install it, the root Makefile, and its supporting script in a workspace whose root is not a Git repository. This repository's own [AGENTS.md](AGENTS.md) is only for maintaining the bootstrap files.
 
 Give your coding agent this prompt:
 
 ```text
-Create a PolyAgent workspace directory whose root is not a Git repository. Clone https://github.com/L-Rocket/PolyAgent.git into <workspace>/.bootstrap/polyagent. Read .bootstrap/polyagent/AGENTS.md and .bootstrap/polyagent/workspace/README.md, then run .bootstrap/polyagent/scripts/init-workspace.sh. Verify the installed root AGENTS.md, each child repository's remote and branch, and the .agents/skills/ symlinks. Do not commit child repositories, credentials, or machine-specific configuration. When finished, report the initialization results and any repository access I need to provide.
+Create a PolyAgent workspace directory whose root is not a Git repository. Clone https://github.com/L-Rocket/PolyAgent.git into <workspace>/.bootstrap/polyagent. Read .bootstrap/polyagent/workspace/root/AGENTS.md and .bootstrap/polyagent/workspace/README.md, then run .bootstrap/polyagent/scripts/init-workspace.sh. Verify the installed root AGENTS.md, Makefile, scripts/git-status.py, each child repository's remote and branch, and the .agents/skills/ symlinks. Do not commit child repositories, credentials, or machine-specific configuration. When finished, report the initialization results and any repository access I need to provide.
 ```
 
 The default manifest includes public repositories. Additional repositories can be listed locally when you have access to them.

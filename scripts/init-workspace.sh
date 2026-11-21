@@ -14,21 +14,34 @@ fi
 cd "$workspace_root" || exit 1
 failed=0
 
-if [ -L "$workspace_root/AGENTS.md" ]; then
-  echo "The workspace AGENTS.md must be a regular file, not a symlink." >&2
-  exit 1
-elif [ ! -e "$workspace_root/AGENTS.md" ]; then
-  cp "$bootstrap_root/AGENTS.md" "$workspace_root/AGENTS.md"
-  echo "Installed workspace AGENTS.md"
-elif ! cmp -s "$bootstrap_root/AGENTS.md" "$workspace_root/AGENTS.md"; then
-  echo "CHECK AGENTS.md: local copy differs from the bootstrap source; review and merge updates" >&2
-fi
+install_root_file() {
+  local relative="$1" source="$bootstrap_root/workspace/root/$1" target="$workspace_root/$1"
+  if [ -L "$target" ]; then
+    echo "FAILED $relative: expected a regular file, found a symlink" >&2
+    failed=1
+  elif [ ! -e "$target" ]; then
+    mkdir -p "$(dirname "$target")"
+    if cp "$source" "$target"; then
+      echo "Installed $relative"
+    else
+      failed=1
+    fi
+  elif ! cmp -s "$source" "$target"; then
+    echo "CHECK $relative: local copy differs from the bootstrap source; review and merge updates" >&2
+  else
+    echo "OK $relative: matches bootstrap source"
+  fi
+}
+
+install_root_file AGENTS.md
+install_root_file Makefile
+install_root_file scripts/git-status.py
 
 process_manifest() {
   local manifest="$1" directory url branch path actual_remote actual_branch
   while IFS=$'\t' read -r directory url branch || [ -n "$directory" ]; do
     [[ -z "$directory" || "$directory" == \#* ]] && continue
-    if [[ ! "$directory" =~ ^[A-Za-z0-9._-]+$ || "$directory" == . || "$directory" == .. || "$directory" == .bootstrap || "$directory" == .agents || -z "$url" || -z "$branch" ]]; then
+    if [[ ! "$directory" =~ ^[A-Za-z0-9._-]+$ || "$directory" == . || "$directory" == .. || "$directory" == .bootstrap || "$directory" == .agents || "$directory" == scripts || -z "$url" || -z "$branch" ]]; then
       echo "Invalid entry in $manifest: $directory" >&2
       failed=1
       continue
