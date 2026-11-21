@@ -29,6 +29,16 @@ The platform currently runs as a project deployment. Access to the platform-prov
 2. Open [Chat](https://managed-agents.colab.duke.edu/chat), select your agent, and send a message. PolyAgent saves the session so you can continue it later.
 3. To use the agent from an application, create an [API key](https://managed-agents.colab.duke.edu/keys), keep it on your server, and follow the [developer guide](https://duke-ece.github.io/managed-agents-docs/developers/) to start a session and stream replies.
 
+## Set up a development workspace
+
+This repository also provides an entry point for coding agents working across the PolyAgent repositories. See [workspace initialization](workspace/README.md) for the public repository list, optional private checkouts, and verification steps.
+
+Give your coding agent this prompt:
+
+> Clone `https://github.com/L-Rocket/PolyAgent.git` and use the cloned repository directory as the workspace root. First read the root `AGENTS.md` and the [workspace initialization guide](workspace/README.md), then run `scripts/init-workspace.sh`. Verify each child repository's remote and branch, as well as the `.agents/skills/` symlinks. Do not commit child repositories, credentials, or machine-specific configuration. When finished, report the initialization results and any repository access I need to provide.
+
+The default manifest includes public repositories. Additional repositories can be listed locally when you have access to them.
+
 ## Architecture
 
 ![PolyAgent target architecture with a platform cluster and a dedicated CubeSandbox cluster](https://raw.githubusercontent.com/Duke-ECE/managed-agents-design/main/requirements/0005-cubesandbox-integration/two-clusters.png)

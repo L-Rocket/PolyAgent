@@ -1,0 +1,13 @@
+# directory<TAB>clone URL<TAB>branch
+agent-runtime	https://github.com/Duke-ECE/agent-runtime.git	main
+managed-agents-cli	https://github.com/Duke-ECE/managed-agents-cli.git	main
+managed-agents-design	https://github.com/Duke-ECE/managed-agents-design.git	main
+managed-agents-docs	https://github.com/Duke-ECE/managed-agents-docs.git	main
+managed-agents-frontend	https://github.com/Duke-ECE/managed-agents-frontend.git	main
+managed-agents-sdk	https://github.com/Duke-ECE/managed-agents-sdk.git	main
+managed-agents-sdk-example	https://github.com/Duke-ECE/managed-agents-sdk-example.git	main
+protos	https://github.com/Duke-ECE/protos.git	main
+sandbox-manager	https://github.com/Duke-ECE/sandbox-manager.git	main
+session-manager	https://github.com/Duke-ECE/session-manager.git	main
+standards	https://github.com/Duke-ECE/standards.git	main
+pi	https://github.com/earendil-works/pi.git	main
