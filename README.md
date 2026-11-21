@@ -35,7 +35,9 @@ This repository also provides an entry point for coding agents working across th
 
 Give your coding agent this prompt:
 
-> Clone `https://github.com/L-Rocket/PolyAgent.git` and use the cloned repository directory as the workspace root. First read the root `AGENTS.md` and the [workspace initialization guide](workspace/README.md), then run `scripts/init-workspace.sh`. Verify each child repository's remote and branch, as well as the `.agents/skills/` symlinks. Do not commit child repositories, credentials, or machine-specific configuration. When finished, report the initialization results and any repository access I need to provide.
+```text
+Clone https://github.com/L-Rocket/PolyAgent.git and use the cloned repository directory as the workspace root. First read the root AGENTS.md and workspace/README.md, then run scripts/init-workspace.sh. Verify each child repository's remote and branch, as well as the .agents/skills/ symlinks. Do not commit child repositories, credentials, or machine-specific configuration. When finished, report the initialization results and any repository access I need to provide.
+```
 
 The default manifest includes public repositories. Additional repositories can be listed locally when you have access to them.
 
