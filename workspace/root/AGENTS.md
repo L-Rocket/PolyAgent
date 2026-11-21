@@ -12,7 +12,7 @@ Work inside **one repository at a time**. There is no workspace-wide build, root
 
 The bootstrap instructions are in `.bootstrap/polyagent/workspace/README.md`. Run `.bootstrap/polyagent/scripts/init-workspace.sh` from this root to install missing workspace files, clone the 13 repositories available without credentials, verify remotes and branches, and create local `.agents/skills/` links. The script does not pull or alter existing child checkouts.
 
-The default manifest is `.bootstrap/polyagent/workspace/repos.tsv`. Five more known repositories requiring GitHub authorization are listed in `.bootstrap/polyagent/workspace/repos.restricted.tsv`; after access is configured, rerun the script with `--include-restricted`. Additional personal checkouts can go in the ignored `.bootstrap/polyagent/workspace/repos.local.tsv`. If access is missing, report it; do not substitute a different repository or claim a complete checkout. Use the manifests' default branches for a new workspace, not feature branches or temporary worktrees from another machine. The bootstrap repository, child repositories, and `.agents/skills/` are separate from this unversioned root.
+The default manifest is `.bootstrap/polyagent/workspace/repos.tsv`. Four more known repositories requiring GitHub authorization are listed in `.bootstrap/polyagent/workspace/repos.restricted.tsv`; after access is configured, rerun the script with `--include-restricted`. Additional personal checkouts can go in the ignored `.bootstrap/polyagent/workspace/repos.local.tsv`. If access is missing, report it; do not substitute a different repository or claim a complete checkout. Use the manifests' default branches for a new workspace, not feature branches or temporary worktrees from another machine. The bootstrap repository, child repositories, and `.agents/skills/` are separate from this unversioned root.
 
 ## Platform request flow
 
@@ -50,10 +50,9 @@ The [public architecture guide](https://duke-ece.github.io/managed-agents-docs/a
 | `pi/` | Upstream agent-harness reference checkout; platform builds consume published packages pinned in `agent-runtime`. | Read `pi/AGENTS.md`; do not run its full build or test outside its documented workflow. |
 | `CubeSandbox/` | Upstream reference source for the CubeSandbox integration; independent of PolyAgent releases. | Read its `AGENTS.md` before changing or building it. |
 | `my-go-layout/` (access-controlled) | Personal Go layout reference, independent of the platform. | Read its own README; do not treat it as a deployment unit. |
-| `ssh-key-uploader/` (access-controlled) | Standalone team operations utility. | Read its own README; handle local configuration privately. |
 | `teamSkills/` (access-controlled) | Team operations and onboarding skills. | The bootstrap script links matching skill directories into `.agents/skills/`. |
 
-The 18 entries across both manifests are repositories, not one composite source tree. The bootstrap checkout is a nineteenth, separate repository. Temporary preview and release worktrees are extra checkouts of existing repositories and are intentionally not in either manifest. Read the owning repository's guide and license before changing or reusing its code.
+The 17 entries across both manifests are repositories, not one composite source tree. The bootstrap checkout is an eighteenth, separate repository. Temporary preview and release worktrees are extra checkouts of existing repositories and are intentionally not in either manifest. Read the owning repository's guide and license before changing or reusing its code.
 
 ## Service boundaries worth preserving
 
