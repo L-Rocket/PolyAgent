@@ -53,7 +53,7 @@ The [public architecture guide](https://duke-ece.github.io/managed-agents-docs/a
 | `ssh-key-uploader/` (access-controlled) | Standalone team operations utility. | Read its own README; handle local configuration privately. |
 | `teamSkills/` (access-controlled) | Team operations and onboarding skills. | The bootstrap script links matching skill directories into `.agents/skills/`. |
 
-The 18 entries across both manifests are repositories, not one composite source tree. The bootstrap checkout is a nineteenth, separate repository. Temporary preview and release worktrees are extra checkouts of existing repositories and are intentionally not in either manifest. Read the owning repository's guide before creating one.
+The 18 entries across both manifests are repositories, not one composite source tree. The bootstrap checkout is a nineteenth, separate repository. Temporary preview and release worktrees are extra checkouts of existing repositories and are intentionally not in either manifest. Read the owning repository's guide and license before changing or reusing its code.
 
 ## Service boundaries worth preserving
 

@@ -13,6 +13,8 @@ The script installs `workspace/root/AGENTS.md`, `workspace/root/Makefile`, and `
 
 Git and access to GitHub are required. The default manifest uses HTTPS and was checked without local credentials. The other five known repositories are listed in `repos.restricted.tsv`. After your GitHub access is configured, run `.bootstrap/polyagent/scripts/init-workspace.sh --include-restricted` to attempt them. Failed clones do not stop later checkouts; the script reports an incomplete workspace and exits nonzero. It never installs credentials.
 
+Publicly cloneable does not itself mean open-source licensed. Check each repository's license before reusing its code; the bootstrap only establishes a local checkout.
+
 To add repositories beyond the known set, create `.bootstrap/polyagent/workspace/repos.local.tsv` with the same tab-separated columns as `repos.tsv`: directory name, clone URL, and branch. This file is ignored by Git. For example:
 
 ```text
