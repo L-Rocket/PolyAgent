@@ -36,10 +36,10 @@ This repository also provides an entry point for coding agents working across th
 Give your coding agent this prompt:
 
 ```text
-Create a PolyAgent workspace directory whose root is not a Git repository. Clone https://github.com/L-Rocket/PolyAgent.git into <workspace>/.bootstrap/polyagent. Read .bootstrap/polyagent/workspace/root/AGENTS.md and .bootstrap/polyagent/workspace/README.md, then run .bootstrap/polyagent/scripts/init-workspace.sh to set up every repository in the manifest, including CubeSandbox and the access-controlled repositories. Verify the installed root AGENTS.md, Makefile, scripts/git-status.py, each child repository's remote and branch, and the .agents/skills/ symlinks. Do not commit child repositories, credentials, or machine-specific configuration. When finished, report the initialization results and any repository access I need to provide.
+Create a PolyAgent workspace directory whose root is not a Git repository. Clone https://github.com/L-Rocket/PolyAgent.git into <workspace>/.bootstrap/polyagent. Read .bootstrap/polyagent/workspace/root/AGENTS.md and .bootstrap/polyagent/workspace/README.md, then run .bootstrap/polyagent/scripts/init-workspace.sh to clone the 13 repositories available without GitHub credentials, including CubeSandbox. If I provide access to the five restricted repositories, rerun the script with --include-restricted. Verify the installed root AGENTS.md, Makefile, scripts/git-status.py, each child repository's remote and branch, and the .agents/skills/ symlinks. Do not commit child repositories, credentials, or machine-specific configuration. When finished, report the initialization results and any repository access I need to provide.
 ```
 
-The default manifest lists all 18 known project and reference repositories, including access-controlled checkouts and upstream CubeSandbox. GitHub access is required for private repositories; failed clones are reported without stopping the remaining checkouts. Additional repositories can be listed locally.
+The [default manifest](workspace/repos.tsv) lists 13 repositories that can be cloned without credentials, including upstream CubeSandbox. Five more are recorded in the [restricted manifest](workspace/repos.restricted.tsv); authorized team members can add them with `--include-restricted`. Additional repositories can be listed locally.
 
 ## Architecture
 
@@ -64,7 +64,7 @@ PolyAgent is a collection of independently versioned repositories. Existing tech
 | [Documentation](https://github.com/Duke-ECE/managed-agents-docs) | Developer and operator guides. |
 | [Design records](https://github.com/Duke-ECE/managed-agents-design) | Cross-repository requirements and decisions. |
 
-The API gateway and mobile application repositories require separate access. They appear in the workspace checkout manifest, but this public source index links only to public repositories. Each repository retains its own license and visibility; this repository's MIT license does not change them.
+The API gateway and mobile application repositories require separate access. They appear in the restricted workspace manifest, while this public source index links only to public repositories. Each repository retains its own license and visibility; this repository's MIT license does not change them.
 
 ## Learn more
 

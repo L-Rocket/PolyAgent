@@ -1,0 +1,6 @@
+# directory<TAB>clone URL<TAB>branch
+managed-agents-backend	https://github.com/Duke-ECE/managed-agents-backend.git	main
+managed-agents-mobile	https://github.com/Duke-ECE/managed-agents-mobile.git	main
+my-go-layout	https://github.com/L-Rocket/my-go-layout.git	main
+ssh-key-uploader	https://github.com/Duke-ECE/ssh-key-uploader.git	main
+teamSkills	https://github.com/Duke-ECE/teamSkills.git	main

@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 set -uo pipefail
 
+include_restricted=0
+if [ "${1:-}" = --include-restricted ] && [ "$#" -eq 1 ]; then
+  include_restricted=1
+elif [ "$#" -ne 0 ]; then
+  echo "Usage: $0 [--include-restricted]" >&2
+  exit 2
+fi
+
 bootstrap_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 if [ "$(basename "$(dirname "$bootstrap_root")")" != .bootstrap ]; then
   echo "Clone this repository into <workspace>/.bootstrap/polyagent before running the script." >&2
@@ -71,6 +79,11 @@ process_manifest() {
 }
 
 process_manifest "$bootstrap_root/workspace/repos.tsv"
+if [ "$include_restricted" -eq 1 ]; then
+  process_manifest "$bootstrap_root/workspace/repos.restricted.tsv"
+else
+  echo "Restricted repositories skipped; rerun with --include-restricted after GitHub access is configured."
+fi
 if [ -f "$bootstrap_root/workspace/repos.local.tsv" ]; then
   process_manifest "$bootstrap_root/workspace/repos.local.tsv"
 fi
